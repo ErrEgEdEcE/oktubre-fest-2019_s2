@@ -1,7 +1,7 @@
 class Marca {
 	var property lupuloPorLitro = 1
 	var property paisDeOrigen
-	
+	var property precioPorLitro = 10
 	
 }
 
