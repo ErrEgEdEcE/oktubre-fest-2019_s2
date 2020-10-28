@@ -2,13 +2,13 @@ import jarras.*
 import marcas.*
 import carpas.*
 
+
 class Persona {
 	var property peso = 70
 	var property jarrasCompradas = []
 	var property nivelDeAguante = 10
 	var property gustaDeMusicaTradicional = true
-	var property paisDeOrigen
-	var property marcasQueLeGustan = []
+	var property paisDeOrigen 
 	
 	
 	method totalAlcoholIngerido() {
@@ -22,12 +22,10 @@ class Persona {
 		return self.estaEbria() and self.jarrasCompradas().all({each => each.capacidad() >= 1})
 	}
 	
-	method leGusta(marca) {
-		return self.marcasQueLeGustan().contains(marca)
-	}
+	method leGusta(marca) = true
 	
 	method quiereEntrarA(carpa) {
-		return self.marcasQueLeGustan().contains(carpa.marcaQueVende())
+		return self.leGusta(carpa.marcaQueVende())
 		       and self.gustaDeMusicaTradicional() == carpa.tieneBanda()
 	}
 	
@@ -41,8 +39,10 @@ class Persona {
 	}
 	
 	method esPatriota() {
-		return self.jarrasCompradas().all({each => each.marca().paisDeOrigen() == self.paisDeOrigen()}) 
-	}
+		return self.jarrasCompradas().all({each => each.paisDeOrigen() == self.paisDeOrigen()}) 
+	} /*Me volví loca buscando como resolver lo de los países. Cree una clase país para poder 
+	 * pasar como instancia a cada país, y reutilizarlos en paísDeOrigen, pero  me daba error de tipos
+	 * al utilizarlos en las subclases de personas*/
 	
 	method carpasQueLeSirvieron() {
 		return self.jarrasCompradas().map({jarra => jarra.vendidaEn()}).asSet()
@@ -65,21 +65,23 @@ class Persona {
 
 //REVISAR
 class Belgas inherits Persona {
-	
-	override method marcasQueLeGustan(m) {
-		self.marcasQueLeGustan().addAll({marca => marca.lupuloPorLitro() > 4 })
+	    
+	    override method leGusta(marca) {
+		return marca.lupuloPorLitro() > 4 
      }
 }
 
 
 class Checos inherits Persona {
-	override method marcasQueLeGustan(m) {
-		self.marcasQueLeGustan().addAll({ m.graduacion() > 8 })
+	
+	override method leGusta(marca) {
+		return marca.graduacion() > 8 
 	}
 }
 
 class Alemanes inherits Persona {
+	
 	override method quiereEntrarA(carpa) {
-		return super(carpa) and carpa.genteDentro().size().max(1) / 2 == 0
+		return super(carpa) and carpa.genteDentro().size().even()
 	}
 }

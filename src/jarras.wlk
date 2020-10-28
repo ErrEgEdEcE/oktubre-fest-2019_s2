@@ -1,6 +1,7 @@
 import marcas.*
 import carpas.*
 
+
 class Jarra {
 	var property capacidad = 1
 	var property marca
@@ -13,4 +14,7 @@ class Jarra {
 		return self.capacidad() * self.vendidaEn().precioDeVenta()
 	}
 	
+	method paisDeOrigen() {
+		return self.marca().paisDeOrigen()
+	}
 }

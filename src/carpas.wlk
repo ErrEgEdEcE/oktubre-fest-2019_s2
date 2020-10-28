@@ -2,15 +2,19 @@ import personas.*
 import marcas.*
 import jarras.*
 
+
 class Carpa {
 	var property limiteDeGente = 10
 	var property tieneBanda = true
 	var property marcaQueVende
-	var property genteDentro = []
+	var property genteDentro = #{}
 	var property tipoDeRecargo = self.recargoFijo()
 	
+	method cantidadDeGenteDentro() {
+		return self.genteDentro().size()
+	}
 	method dejaIngresarA(persona) {
-		return self.genteDentro().size() + 1 <= self.limiteDeGente() and not persona.estaEbria()
+		return self.cantidadDeGenteDentro() + 1 <= self.limiteDeGente() and not persona.estaEbria()
 	}
 	
 	method servirJarraA(tamanio, persona) {
@@ -39,7 +43,7 @@ class Carpa {
 	}
 	
 	method recargoPorCantidad() {
-		return if (self.genteDentro() >= self.limiteDeGente()) {self.marcaQueVende().precioPorLitro() * 0.4}
+		return if (self.cantidadDeGenteDentro() >= self.limiteDeGente()) {self.marcaQueVende().precioPorLitro() * 0.4}
 		else {self.marcaQueVende().precioPorLitro() * 0.25}
 	}
 	method recargoPorEbriedad() {
@@ -48,4 +52,9 @@ class Carpa {
 	}
 
 }
+/*Pense en hacer un objeto recargo que retornara en diferentes métodos, pero no me permitía
+ * permitía remitir a los métodos de la clase carpa que necesitaba consultar (marcaQueVende()
+ * o cantidadDeGenteDentro()*/
+
+
 
